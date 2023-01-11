@@ -1,35 +1,46 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Generator</title>
     <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="fav" type="image/png" href="https://www.google.com/s2/favicons?domain=css-tricks.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css"/>
     <link rel="stylesheet" href="style.css">
+    <title>iQuote</title>
 </head>
 <body>
-    <div class="quote-container" id="quote-container">
+    <div class="quoteContainer" id="quote-Container">
+
         <!-- Quote -->
-        <div class="quote-text">
+        <div class="quoteText">
             <i class="fas fa-quote-left"></i>
-            <span id="quote"></span>
+            <span id="quote-Text">Sleep is the cousin of Death</span>
+            <i class="fas fa-quote-right"></i>
         </div>
+
         <!-- Author -->
-        <div class="quote-author">
-            <span id="author"></span>
+        <div class="quoteAuthor" id="quote-Author">
+            <span id="author">Sudhguru</span>
         </div>
+
         <!-- Buttons -->
-        <div class="button-container">
-            <button class="twitter-button" id="twitter" title="Tweet This!">
+        <div class="buttonContainer" id="button-Container">
+            <button class="twitterButton" id="twitter-Button">
                 <i class="fab fa-twitter"></i>
+
             </button>
-            <button id="new-quote">New Quote</button>
+            <button id="new-Quote">New Quote</button>
         </div>
+
     </div>
-    <!-- Loader -->
+
+    <!-- CSS Loader -->
     <div class="loader" id="loader"></div>
-    <!-- Script -->
+    
+    <!-- Scripts -->
+    <script src="quotes.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
