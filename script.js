@@ -1,64 +1,74 @@
-const quoteContainer = document.getElementById('quote-container');
-const quoteText = document.getElementById('quote');
-const authorText = document.getElementById('author');
-const twitterBtn = document.getElementById('twitter');
-const newQuoteBtn = document.getElementById('new-quote');
+const quoteContainer = document.getElementById('quote-Container');
+const quoteText = document.getElementById('quote-Text');
+const quoteAuthor = document.getElementById('quote-Author');
+const twitterButton = document.getElementById('twitter-Button');
+const newQuoteButton = document.getElementById('new-Quote');
 const loader = document.getElementById('loader');
 
-// Loading Spinner Shown
+let apiQuotes = [];
+
+
+// To show data is being loaded
 function loading() {
-  loader.hidden = false;
-  quoteContainer.hidden = true;
+    loader.hidden = false;
+    quoteContainer.hidden = true;
 }
 
-// Remove Loading Spinner
-function complete() {
-  if (!loader.hidden) {
+// Hide Loader Animation
+function loadComplete() {
     quoteContainer.hidden = false;
     loader.hidden = true;
-  }
 }
 
-// Get Quote From API
-async function getQuote() {
-  loading();
-  // We need to use a Proxy URL to make our API call in order to avoid a CORS error
-  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-  const apiUrl = 'https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
-  try {
-    const response = await fetch(proxyUrl + apiUrl);
-    const data = await response.json();
-    // Check if Author field is blank and replace it with 'Unknown'
-    if (data.quoteAuthor === '') {
-      authorText.innerText = 'Unknown';
+
+// Function : Display a New Quote
+
+function newQuote() {
+    loading();
+    //Pick a Random Quote from apiQuotes array
+    const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+    // if Author field is blank, then dynamically replace it with "Author Unknown
+    if (!quote.author) {
+        quoteAuthor.textContent = "Unknown Author";
     } else {
-      authorText.innerText = data.quoteAuthor;
+        quoteAuthor.textContent = quote.author;
     }
-    // Dynamically reduce font size for long quotes
-    if (data.quoteText.length > 120) {
-      quoteText.classList.add('long-quote');
+
+    // Check Quote length to determine styling
+    if (quote.text.length > 60) {
+        quoteText.classList.add('long-quote');
     } else {
-      quoteText.classList.remove('long-quote');
+        quoteText.classList.remove('long-quote');
     }
-    quoteText.innerText = data.quoteText;
-    // Stop Loading, Show Quote
-    complete();
-  } catch (error) {
-    getQuote();
-  }
+    // quoteAuthor.textContent = quote.author;
+    quoteText.textContent = quote.text;
+    loadComplete();
+}
+// Get Quotes from API or local source
+// response is an array with nested objects
+// async fetch reqstest within a Try Catch Statement
+async function getQuotes() {
+    loading();
+    const apiURL = 'https://type.fit/api/quotes';
+    try {
+        const response = await fetch(apiURL);
+        apiQuotes = await response.json();
+        newQuote();
+    } catch (error) {
+        alert(error)
+        // Catching an Error
+    }
 }
 
-// Tweet Quote
+// Tweet a Quote
 function tweetQuote() {
-  const quote = quoteText.innerText;
-  const author = authorText.innerText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
-  window.open(twitterUrl, '_blank');
+    const twitterURL = `https://twitter.com/intent/tweet?text=${quoteText.textContent} - ${quoteAuthor.textContent}`;
+    window.open(twitterURL, '_blank');
 }
 
-// Event Listeners
-newQuoteBtn.addEventListener('click', getQuote);
-twitterBtn.addEventListener('click', tweetQuote);
+// Event Listners
+newQuoteButton.addEventListener('click', newQuote);
+twitterButton.addEventListener('click', tweetQuote);
 
-// On Load
-getQuote();
+//on load
+getQuotes();
